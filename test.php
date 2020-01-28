@@ -1,8 +1,44 @@
 <?php
-    echo"hi";
-    $a = 2;
-if(2==$a){echo "ho";}
-if($a=3){echo"beep";}
-if($a==2)
-    echo "hi";
-exit (1);
+echo "hi";
+$a = 2;
+if ($a == 2) {
+    echo "ho";
+}
+if ($a == 3) {
+    echo "beep";
+}
+
+
+// Example from the PHP docs showing while with assignment in it
+
+$host = '127.0.0.1';
+$db   = 'db';
+$user = 'root';
+$pass = '';
+$charset = 'utf8mb4';
+
+$dsn = "mysql:host=$host;dbname=$db;charset=$charset";
+$options = [
+    PDO::ATTR_ERRMODE            => PDO::ERRMODE_EXCEPTION,
+    PDO::ATTR_DEFAULT_FETCH_MODE => PDO::FETCH_ASSOC,
+    PDO::ATTR_EMULATE_PREPARES   => false,
+];
+
+try {
+    $pdo = new PDO($dsn, $user, $pass, $options);
+} catch (\PDOException $e) {
+    throw new \PDOException($e->getMessage(), (int) $e->getCode());
+}
+
+$formatResult = array();
+
+$rawResult = $pdo->query('SELECT * FROM users');
+while ($row = $rawResult->fetch()) {
+    $rowResult = array();
+
+    foreach ($row as $collum => $value) {
+        $rowResult[$collum] = $value;
+    }
+
+    $formatResult[] = $rowResult;
+}
